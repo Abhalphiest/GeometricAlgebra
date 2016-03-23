@@ -1,0 +1,49 @@
+Load map
+========
+
+Module:  ga_main.obj
+ Text segment:  76 bytes, load point 0x00400000
+ Data segment:  56 bytes, load point 0x10000000
+ Symbols:
+                 Name Section Mode    Value
+   first_vector_label   Data   R   0x10000000
+       get_input_loop   Text   R   0x00400024
+             READ_INT          A   0x00000005
+        product_label   Data   R   0x10000021
+       validate_input   Text   R   0x0040002c
+              newline   Data   R   0x10000032
+  second_vector_label   Data   R   0x10000010
+         PRINT_STRING          A   0x00000004
+                 main   Text   RG  0x00400000
+            DIMENSION          A   0x00000008
+                 EXIT          A   0x0000000a
+
+Module:  geomalgebra.obj
+
+Module:  ga_io.obj
+ Text segment:  156 bytes, load point 0x0040004c
+ Data segment:  72 bytes, load point 0x10000038
+ Symbols:
+                 Name Section Mode    Value
+             e3_print   Data   R   0x10000042
+   print_ga_loop_done   Text   R   0x004000cc
+             e1_print   Data   R   0x1000003a
+            basis_tbl   Data   R   0x1000005c
+          print_basis   Text   RG  0x0040004c
+           e123_print   Data   R   0x10000055
+         PRINT_STRING          A   0x00000004
+            e12_print   Data   R   0x10000046
+            e31_print   Data   R   0x10000050
+            e23_print   Data   R   0x1000004b
+        print_ga_loop   Text   R   0x004000a4
+      print_ga_object   Text   RG  0x0040007c
+             e2_print   Data   R   0x1000003e
+             e0_print   Data   R   0x10000038
+            PRINT_INT          A   0x00000001
+
+Module:  r2k_startup.obj
+ Text segment:  36 bytes, load point 0x004000e8
+ Symbols:
+                 Name Section Mode    Value
+            SYS_EXIT2          A   0x00000011
+       __r2k__entry__   Text   RG  0x004000ec

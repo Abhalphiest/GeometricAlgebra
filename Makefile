@@ -16,7 +16,7 @@ RLINK = /home/fac/wrc/bin/rlink
 #
 # Object files
 #
-OBJFILES = ga_main.asm geomalgebra.asm ga_io.asm
+OBJFILES = ga_main.obj geomalgebra.obj ga_io.obj
 
 #
 # Transformation rule: .asm into .obj
@@ -33,5 +33,5 @@ OBJFILES = ga_main.asm geomalgebra.asm ga_io.asm
 #
 # Main target
 #
-three_in_row.out:	$(OBJFILES)
+ga_main.out:	$(OBJFILES)
 	$(RLINK) -m -o $*.out $(OBJFILES) > $*.map

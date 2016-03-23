@@ -1,0 +1,154 @@
+   1 0000               # File: 	ga_io.asm
+   2 0000               # 
+   3 0000               # Author: 	Margaret Dorsey
+   4 0000               #
+   5 0000               # Description: 	A collection of functions for printing out geometric algebra
+   6 0000               #		results.
+   7 0000               #
+   8 0000               
+   9 0000               #
+  10 0000               # CONSTANT DEFINITIONS
+  11 0000               #
+  12 0000               
+  13 0000               #syscall
+  14 0000               PRINT_INT =	1
+  15 0000               PRINT_STRING = 	4
+  16 0000               
+  17 0000               #
+  18 0000               # DATA
+  19 0000               #
+  20 0000               	.data
+  21 0000               	.align 	2
+  22 0000               
+  23 0000               #basis vectors
+  24 0000               
+  25 0000               e0_print:
+  26 0000 2000    		.asciiz " "
+  27 0002               e1_print:
+  28 0002 65312000		.asciiz "e1 "
+  29 0006               e2_print:
+  30 0006 65322000		.asciiz "e2 "
+  31 000a               e3_print:
+  32 000a 65332000		.asciiz "e3 "
+  33 000e               e12_print:
+  34 000e 65313220		.asciiz "e12 "
+          00      
+  35 0013               e23_print:
+  36 0013 65323320		.asciiz "e23 "
+          00      
+  37 0018               e31_print:
+  38 0018 65333120		.asciiz "e31 "
+          00      
+  39 001d               e123_print:
+  40 001d 65313233		.asciiz "e123 "
+          2000    
+  41 0023               
+  42 0023 00      		.align	2
+  43 0024               
+  44 0024               basis_tbl:
+  45 0024 00000000		.word 	e0_print
+  46 0028 00000002		.word	e1_print
+  47 002c 00000006		.word	e2_print
+  48 0030 0000000A		.word	e3_print
+  49 0034 0000000E		.word	e12_print
+  50 0038 00000013		.word	e23_print
+  51 003c 00000018		.word	e31_print
+  52 0040 0000001D		.word	e123_print
+  53 0044               
+  54 0044               #
+  55 0044               # FUNCTIONS
+  56 0044               #
+  57 0044               
+  58 0000               	.text
+  59 0000               	.align 	2
+  60 0000               	.globl	print_ga_object
+  61 0000               	.globl	print_basis
+  62 0000               
+  63 0000               #
+  64 0000               # Name: 	print_basis
+  65 0000               #
+  66 0000               # Description:	prints a basis vector based on a bit field integer
+  67 0000               #
+  68 0000               # Arguments:	a0: integer representing a basis vector
+  69 0000               #
+  70 0000               # Returns:	Nothing.
+  71 0000               #
+  72 0000               
+  73 0000               print_basis:
+  74 0000 23BDFFFC		addi	$sp, $sp, -4	#build our stack frame
+  75 0004 AFBF0000		sw	$ra, 0($sp)
+  76 0008               
+  77 0008 3C080000		la	$t0, basis_tbl	#get the address of our lookup table
+     000c 35080000
+  78 0010 00042080		sll	$a0, 2		#change from word addressed to byte addressed
+  79 0014 01044020		add	$t0, $t0, $a0	
+  80 0018 8D040000		lw	$a0, 0($t0)	#address of our null terminated string
+  81 001c 34020004		ori	$v0, $zero, PRINT_STRING
+  82 0020 0000000C		syscall			#print our stuff
+  83 0024               
+  84 0024 8FBF0000		lw	$ra, 0($sp)	#restore stack frame
+  85 0028 23BD0004		addi	$sp, $sp, 4
+  86 002c 03E00008		jr	$ra		#return to caller
+  87 0030               
+  88 0030               #
+  89 0030               # Name:		print_ga_object
+  90 0030               #
+  91 0030               # Description:	prints out a geometric algebra object structure in basis
+  92 0030               #		vector notation.
+  93 0030               #
+  94 0030               # Arguments:	a0: address of a geometric object
+  95 0030               #
+  96 0030               # Returns:	Nothing
+  97 0030               #
+  98 0030               
+  99 0030               print_ga_object:
+ 100 0030 23BDFFEC		addi	$sp, $sp, -20		#build our stack frame
+ 101 0034 AFBF0000		sw	$ra, 0($sp)
+ 102 0038 AFB00004		sw	$s0, 4($sp)		#protect our argument
+ 103 003c AFB10008		sw	$s1, 8($sp)		#protect our length
+ 104 0040 AFB2000C		sw	$s2, 12($sp)		#loop control
+ 105 0044 AFB30010		sw	$s3, 16($sp)		#pointer in struct
+ 106 0048               
+ 107 0048 00808025		or	$s0, $a0, $zero		#save our address
+ 108 004c 8E110000		lw	$s1, 0($s0)		#get our length
+ 109 0050 00009025		or	$s2, $zero, $zero	#initialize loop control
+ 110 0054 22130004		addi	$s3, $s0, 4		#skip the first word
+ 111 0058               print_ga_loop:
+ 112 0058 0251402A		slt	$t0, $s2, $s1		#still more things to print?
+ 113 005c 11000008		beq	$t0, $zero, print_ga_loop_done
+ 114 0060               
+ 115 0060 8E640000		lw	$a0, 0($s3)		#print coefficient
+ 116 0064 34020001		ori	$v0, $zero, PRINT_INT	
+ 117 0068 0000000C		syscall
+ 118 006c               
+ 119 006c 8E640004		lw	$a0, 4($s3)		#print our basis vector
+ 120 0070 0C000000		jal	print_basis
+ 121 0074               	
+ 122 0074 22730008		addi	$s3, $s3, 8		#go to next term
+ 123 0078 22520001		addi	$s2, $s2, 1
+ 124 007c 08000016		j	print_ga_loop		#back to top
+ 125 0080               print_ga_loop_done:
+ 126 0080 8FBF0000		lw	$ra, 0($sp)		#restore our stack frame
+ 127 0084 8FB00004		lw	$s0, 4($sp)
+ 128 0088 8FB10008		lw	$s1, 8($sp)
+ 129 008c 8FB2000C		lw	$s2, 12($sp)
+ 130 0090 8FB30010		lw	$s3, 16($sp)
+ 131 0094 23BD0014		addi	$sp, $sp, 20
+ 132 0098 03E00008		jr	$ra			#return to caller
+
+
+PRINT_INT           = 00000001   
+PRINT_STRING        = 00000004   
+basis_tbl             00000024 R  data 
+e0_print              00000000 R  data 
+e123_print            0000001D R  data 
+e12_print             0000000E R  data 
+e1_print              00000002 R  data 
+e23_print             00000013 R  data 
+e2_print              00000006 R  data 
+e31_print             00000018 R  data 
+e3_print              0000000A R  data 
+print_basis           00000000 RG text 
+print_ga_loop         00000058 R  text 
+print_ga_loop_done    00000080 R  text 
+print_ga_object       00000030 RG text 

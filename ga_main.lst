@@ -1,0 +1,104 @@
+   1 0000               #
+   2 0000               # File:		ga_main.asm
+   3 0000               #
+   4 0000               # Author:	Margaret Dorsey
+   5 0000               #
+   6 0000               # Description:	ga_main.asm basically provides an interface for testing
+   7 0000               #		and utilizing the functions of geomalgebra.asm. Thus
+   8 0000               #		here we handle mostly user input, validation, and
+   9 0000               #		function calls.
+  10 0000               #
+  11 0000               # Revisions:	see gitlog.txt
+  12 0000               #
+  13 0000               
+  14 0000               #
+  15 0000               # CONSTANT DEFINITIONS
+  16 0000               #
+  17 0000               
+  18 0000               #syscalls
+  19 0000               PRINT_STRING = 	4
+  20 0000               READ_INT =	5
+  21 0000               EXIT = 		10
+  22 0000               
+  23 0000               #for looping
+  24 0000               DIMENSION =	8
+  25 0000               
+  26 0000               #
+  27 0000               # DATA
+  28 0000               #
+  29 0000               
+  30 0000               	.data
+  31 0000               	.align	2
+  32 0000               
+  33 0000               first_vector_label:
+  34 0000 46697273		.asciiz "First operand: "
+          74206F70
+          6572616E
+          643A2000
+  35 0010               second_vector_label:
+  36 0010 5365636F		.asciiz "Second operand: "
+          6E64206F
+          70657261
+          6E643A20
+          00      
+  37 0021               product_label:
+  38 0021 50726F64		.asciiz "Product output: "
+          75637420
+          6F757470
+          75743A20
+          00      
+  39 0032               newline:
+  40 0032 0A00    		.asciiz "\n"
+  41 0034               
+  42 0034               #
+  43 0034               # FUNCTIONS
+  44 0034               #
+  45 0034               
+  46 0000               	.text
+  47 0000               	.align	2
+  48 0000               	.globl	main
+  49 0000               	.globl	print_basis
+  50 0000               	.globl	print_ga_object
+  51 0000               #	.globl	new_ga_object
+  52 0000               #	.globl	geom_product
+  53 0000               
+  54 0000               main:
+  55 0000 23BDFFE8		addi	$sp, $sp, -24		#build our stack frame
+  56 0004 AFBF0000		sw	$ra, 0($sp)
+  57 0008 AFB00004		sw	$s0, 4($sp)
+  58 000c AFB10008		sw	$s1, 8($sp)
+  59 0010 AFB2000C		sw	$s2, 12($sp)
+  60 0014 AFB30010		sw	$s3, 16($sp)
+  61 0018 AFB40014		sw	$s4, 20($sp)
+  62 001c               
+  63 001c 0000A025		or	$s4, $zero, $zero	#loop control
+  64 0020 34130008		ori	$s3, $zero, DIMENSION	#set up for loop bound
+  65 0024               get_input_loop:
+  66 0024 0293402A		slt	$t0, $s4, $s3		#will be 1 if we are still in
+  67 0028 11000000		beq	$t0, $zero, validate_input
+  68 002c               
+  69 002c               validate_input:
+  70 002c               
+  71 002c 8FBF0000		lw	$ra, 0($sp)
+  72 0030 8FB00004		lw	$s0, 4($sp)
+  73 0034 8FB10008		lw	$s1, 8($sp)
+  74 0038 8FB2000C		lw	$s2, 12($sp)
+  75 003c 8FB30010		lw	$s3, 16($sp)
+  76 0040 8FB40014		lw	$s4, 20($sp)
+  77 0044 23BD0018		addi	$sp, $sp, 24
+  78 0048 03E00008		jr	$ra		#return
+
+
+DIMENSION            = 00000008   
+EXIT                 = 0000000A   
+PRINT_STRING         = 00000004   
+READ_INT             = 00000005   
+first_vector_label     00000000 R  data 
+get_input_loop         00000024 R  text 
+main                   00000000 RG text 
+newline                00000032 R  data 
+print_basis            ******** XG
+print_ga_object        ******** XG
+product_label          00000021 R  data 
+second_vector_label    00000010 R  data 
+validate_input         0000002C R  text 
