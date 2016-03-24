@@ -80,7 +80,7 @@ get_input_loop:
 	j	get_input_loop
 	
 validate_input:
-	or	$a0, $zero, $s5		#our array is an arg
+	la	$a0, input_arr		#our array is an arg
 	jal	new_ga_object
 	or	$a0, $zero, $v0
 	jal	print_ga_object

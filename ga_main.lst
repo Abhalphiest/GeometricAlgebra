@@ -97,20 +97,21 @@
   80 0054 0800000C		j	get_input_loop
   81 0058               	
   82 0058               validate_input:
-  83 0058 00152025		or	$a0, $zero, $s5		#our array is an arg
-  84 005c 0C000000		jal	new_ga_object
-  85 0060 00022025		or	$a0, $zero, $v0
-  86 0064 0C000000		jal	print_ga_object
-  87 0068               
-  88 0068 8FBF0000		lw	$ra, 0($sp)
-  89 006c 8FB00004		lw	$s0, 4($sp)
-  90 0070 8FB10008		lw	$s1, 8($sp)
-  91 0074 8FB2000C		lw	$s2, 12($sp)
-  92 0078 8FB30010		lw	$s3, 16($sp)
-  93 007c 8FB40014		lw	$s4, 20($sp)
-  94 0080 8FB50018		lw	$s5, 24($sp)
-  95 0084 23BD001C		addi	$sp, $sp, 28
-  96 0088 03E00008		jr	$ra		#return
+  83 0058 3C040000		la	$a0, input_arr		#our array is an arg
+     005c 34840000
+  84 0060 0C000000		jal	new_ga_object
+  85 0064 00022025		or	$a0, $zero, $v0
+  86 0068 0C000000		jal	print_ga_object
+  87 006c               
+  88 006c 8FBF0000		lw	$ra, 0($sp)
+  89 0070 8FB00004		lw	$s0, 4($sp)
+  90 0074 8FB10008		lw	$s1, 8($sp)
+  91 0078 8FB2000C		lw	$s2, 12($sp)
+  92 007c 8FB30010		lw	$s3, 16($sp)
+  93 0080 8FB40014		lw	$s4, 20($sp)
+  94 0084 8FB50018		lw	$s5, 24($sp)
+  95 0088 23BD001C		addi	$sp, $sp, 28
+  96 008c 03E00008		jr	$ra		#return
 
 
 DIMENSION            = 00000008   
