@@ -51,10 +51,10 @@
   47 0028 00000000		.word 	e0_print
   48 002c 00000004		.word	e1_print
   49 0030 00000008		.word	e2_print
-  50 0034 0000000C		.word	e3_print
-  51 0038 00000010		.word	e12_print
-  52 003c 00000015		.word	e23_print
-  53 0040 0000001A		.word	e31_print
+  50 0034 00000010		.word	e12_print
+  51 0038 0000000C		.word	e3_print
+  52 003c 0000001A		.word	e31_print
+  53 0040 00000015		.word	e23_print
   54 0044 0000001F		.word	e123_print
   55 0048               
   56 0048               #

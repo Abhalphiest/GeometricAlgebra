@@ -47,10 +47,10 @@ basis_tbl:
 	.word 	e0_print
 	.word	e1_print
 	.word	e2_print
-	.word	e3_print
 	.word	e12_print
-	.word	e23_print
+	.word	e3_print
 	.word	e31_print
+	.word	e23_print
 	.word	e123_print
 
 #

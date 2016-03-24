@@ -46,10 +46,10 @@
   41 0194 00000000		.word	0	#bit field for e0
   42 0198 00000048		.word	72	#e1
   43 019c 00000012		.word	18	#e2
-  44 01a0 00000024		.word	36	#e3
-  45 01a4 000000B2		.word	178	#e12
-  46 01a8 000000F2		.word	242	#e23
-  47 01ac 000000C8		.word	200	#e31
+  44 01a0 000000B2		.word	178	#e12
+  45 01a4 00000024		.word	36	#e3
+  46 01a8 000000C8		.word	200	#e31
+  47 01ac 000000F2		.word	242	#e23
   48 01b0 000000DC		.word	220	#e123
   49 01b4               
   50 01b4               prod_arr:
@@ -169,149 +169,150 @@
  162 00b4 0015A880		sll	$s5, 2
  163 00b8 0214A020		add	$s4, $s0, $s4
  164 00bc 0235A820		add	$s5, $s1, $s5
- 165 00c0               
- 166 00c0 3C160000		la	$s6, prod_arr
-     00c4 36D60000
- 167 00c8               
- 168 00c8               prod_loop_out:
- 169 00c8 0254402A		slt	$t0, $s2, $s4
- 170 00cc 1100000F		beq	$t0, $zero, prod_loop_out_done
- 171 00d0               
- 172 00d0               prod_loop_in:
- 173 00d0 0275402A		slt	$t0, $s3, $s5
- 174 00d4 1100000B		beq	$t0, $zero, prod_loop_in_done
- 175 00d8               	
- 176 00d8 02402025		or	$a0, $s2, $zero
- 177 00dc 02602825		or	$a1, $s3, $zero	#load our args
- 178 00e0               	
- 179 00e0 0C000051		jal	get_basis_product
- 180 00e4 00604025		or	$t0, $v1, $zero
- 181 00e8 00084080		sll	$t0, 2
- 182 00ec 02C84020		add	$t0, $s6, $t0	#get pointer to correct element of array
- 183 00f0 8D090000		lw	$t1, 0($t0)
- 184 00f4 00494820		add	$t1, $v0, $t1
- 185 00f8 AD090000		sw	$t1, 0($t0)
- 186 00fc               
- 187 00fc 22730008		addi	$s3, $s3, 8
- 188 0100 08000034		j	prod_loop_in
- 189 0104               prod_loop_in_done:
- 190 0104               
- 191 0104 22520008		addi	$s2, $s2, 8
- 192 0108 08000032		j 	prod_loop_out
- 193 010c               prod_loop_out_done:
- 194 010c 02C02025		or	$a0, $s6, $zero
- 195 0110 0C000000		jal	new_ga_object	#puts it in v0 for us
- 196 0114               	
- 197 0114 02C02025		or	$a0, $s6, $zero
- 198 0118 0C00006A		jal	clear_product_arr
- 199 011c               geom_product_done:
- 200 011c 8FBF0000		lw	$ra, 0($sp)		#restore stack and return
- 201 0120 8FB00004		lw	$s0, 4($sp)
- 202 0124 8FB10008		lw	$s1, 8($sp)
- 203 0128 8FB2000C		lw	$s2, 12($sp)
- 204 012c 8FB30010		lw	$s3, 16($sp)
- 205 0130 8FB40014		lw	$s4, 20($sp)
- 206 0134 8FB50018		lw	$s5, 24($sp)
- 207 0138 8FB6001C		lw	$s6, 28($sp)
- 208 013c 23BD0020		addi	$sp, $sp, 32
- 209 0140 03E00008		jr	$ra		
- 210 0144               
- 211 0144               #
- 212 0144               # Name:		get_basis_product
- 213 0144               #
- 214 0144               # Description:	given two basis vectors with coefficients,
- 215 0144               #		determines their geometric product or outer product, 
- 216 0144               #		including sign.
- 217 0144               #
- 218 0144               # Arguments:	a0: address of pair of coefficient and basis vector for op 1
- 219 0144               #		a1: address of pair of coefficient and basis vector op 2
- 220 0144               #
- 221 0144               # Returns	v0: coefficient of product
- 222 0144               #		v1: basis vector of product
- 223 0144               #
- 224 0144               
- 225 0144               get_basis_product:
- 226 0144               					#no stack for leaf function
- 227 0144 8C880004		lw	$t0, 4($a0)
- 228 0148 8CA90004		lw	$t1, 4($a1)		#get basis vectors
- 229 014c               	
- 230 014c 3C0A0000		la	$t2, sign_tbl
-     0150 354A0000
- 231 0154 00084080		sll	$t0, 2			#get words
- 232 0158 010A4020		add	$t0, $t0, $t2		#correct address for lookup
- 233 015c 8D0B0000		lw	$t3, 0($t0)		#get bit field for this basis vector
- 234 0160               		
- 235 0160 00006025		or	$t4, $zero, $zero
- 236 0164 340D0001		ori	$t5, $zero, 1	
- 237 0168               shift_loop:
- 238 0168 0189702A		slt	$t6, $t4, $t1		#there must be a better way than this
- 239 016c 11C00003		beq	$t6, $zero, shift_loop_done
- 240 0170 000D6840		sll	$t5, 1
- 241 0174 218C0001		addi	$t4, $t4, 1		#increment loop
- 242 0178 0800005A		j	shift_loop	
- 243 017c               shift_loop_done:	
- 244 017c 8C8F0000		lw	$t7, 0($a0)		#coefficients
- 245 0180 8CB80000		lw	$t8, 0($a1)		
- 246 0184 01AB7024		and	$t6, $t5, $t3		#check our sign
- 247 0188 11C00002		beq	$t6, $zero, b_prod	#we're positive then
- 248 018c 200CFFFF		addi	$t4, $zero, -1		#for bitwise negation
- 249 0190 018F7826		xor	$t7, $t4, $t7		#negate our first coefficient
- 250 0194               b_prod:
- 251 0194 01F80018		mult	$t7, $t8
- 252 0198 00001012		mflo	$v0			#we now have our coefficient
- 253 019c 8C880004		lw	$t0, 4($a0)
- 254 01a0 01091826		xor	$v1, $t0, $t1		#get our new basis vector
- 255 01a4               
- 256 01a4 03E00008		jr	$ra			#return to caller
- 257 01a8               
- 258 01a8               
- 259 01a8               
- 260 01a8               #
- 261 01a8               # Name: clear_product_arr
- 262 01a8               #
- 263 01a8               # Description: 	sets all the coefficients in the product array back to 0
- 264 01a8               # 
- 265 01a8               # Arguments: 	a0: ptr to product arr
- 266 01a8               #
- 267 01a8               # Returns:	Nothing
- 268 01a8               #
- 269 01a8               
- 270 01a8               clear_product_arr:
- 271 01a8               					#leaf, no stack
- 272 01a8 20880020		addi	$t0, $a0, 32		#8 integer loop
- 273 01ac 00804825		or	$t1, $a0, $zero
- 274 01b0               	
- 275 01b0               clear_loop:
- 276 01b0 0128502A		slt	$t2, $t1, $t0
- 277 01b4 11400003		beq	$t2, $zero, clear_loop_done
- 278 01b8 AD200000		sw	$zero, 0($t1)
- 279 01bc 21290004		addi	$t1, $t1, 4
- 280 01c0 0800006C		j	clear_loop
- 281 01c4               clear_loop_done:
- 282 01c4 03E00008		jr	$ra
+ 165 00c0 22940004		addi	$s4, $s4, 4
+ 166 00c4 22B50004		addi	$s5, $s5, 4
+ 167 00c8 3C160000		la	$s6, prod_arr
+     00cc 36D60000
+ 168 00d0               
+ 169 00d0               prod_loop_out:
+ 170 00d0 0254402A		slt	$t0, $s2, $s4
+ 171 00d4 1100000F		beq	$t0, $zero, prod_loop_out_done
+ 172 00d8               
+ 173 00d8               prod_loop_in:
+ 174 00d8 0275402A		slt	$t0, $s3, $s5
+ 175 00dc 1100000B		beq	$t0, $zero, prod_loop_in_done
+ 176 00e0               	
+ 177 00e0 02402025		or	$a0, $s2, $zero
+ 178 00e4 02602825		or	$a1, $s3, $zero	#load our args
+ 179 00e8               	
+ 180 00e8 0C000053		jal	get_basis_product
+ 181 00ec 00604025		or	$t0, $v1, $zero
+ 182 00f0 00084080		sll	$t0, 2
+ 183 00f4 02C84020		add	$t0, $s6, $t0	#get pointer to correct element of array
+ 184 00f8 8D090000		lw	$t1, 0($t0)
+ 185 00fc 00494820		add	$t1, $v0, $t1
+ 186 0100 AD090000		sw	$t1, 0($t0)
+ 187 0104               
+ 188 0104 22730008		addi	$s3, $s3, 8
+ 189 0108 08000036		j	prod_loop_in
+ 190 010c               prod_loop_in_done:
+ 191 010c               
+ 192 010c 22520008		addi	$s2, $s2, 8
+ 193 0110 08000034		j 	prod_loop_out
+ 194 0114               prod_loop_out_done:
+ 195 0114 02C02025		or	$a0, $s6, $zero
+ 196 0118 0C000000		jal	new_ga_object	#puts it in v0 for us
+ 197 011c               	
+ 198 011c 02C02025		or	$a0, $s6, $zero
+ 199 0120 0C00006C		jal	clear_product_arr
+ 200 0124               geom_product_done:
+ 201 0124 8FBF0000		lw	$ra, 0($sp)		#restore stack and return
+ 202 0128 8FB00004		lw	$s0, 4($sp)
+ 203 012c 8FB10008		lw	$s1, 8($sp)
+ 204 0130 8FB2000C		lw	$s2, 12($sp)
+ 205 0134 8FB30010		lw	$s3, 16($sp)
+ 206 0138 8FB40014		lw	$s4, 20($sp)
+ 207 013c 8FB50018		lw	$s5, 24($sp)
+ 208 0140 8FB6001C		lw	$s6, 28($sp)
+ 209 0144 23BD0020		addi	$sp, $sp, 32
+ 210 0148 03E00008		jr	$ra		
+ 211 014c               
+ 212 014c               #
+ 213 014c               # Name:		get_basis_product
+ 214 014c               #
+ 215 014c               # Description:	given two basis vectors with coefficients,
+ 216 014c               #		determines their geometric product or outer product, 
+ 217 014c               #		including sign.
+ 218 014c               #
+ 219 014c               # Arguments:	a0: address of pair of coefficient and basis vector for op 1
+ 220 014c               #		a1: address of pair of coefficient and basis vector op 2
+ 221 014c               #
+ 222 014c               # Returns	v0: coefficient of product
+ 223 014c               #		v1: basis vector of product
+ 224 014c               #
+ 225 014c               
+ 226 014c               get_basis_product:
+ 227 014c               					#no stack for leaf function
+ 228 014c 8C880004		lw	$t0, 4($a0)
+ 229 0150 8CA90004		lw	$t1, 4($a1)		#get basis vectors
+ 230 0154               	
+ 231 0154 3C0A0000		la	$t2, sign_tbl
+     0158 354A0000
+ 232 015c 00084080		sll	$t0, 2			#get words
+ 233 0160 010A4020		add	$t0, $t0, $t2		#correct address for lookup
+ 234 0164 8D0B0000		lw	$t3, 0($t0)		#get bit field for this basis vector
+ 235 0168               		
+ 236 0168 00006025		or	$t4, $zero, $zero
+ 237 016c 340D0001		ori	$t5, $zero, 1	
+ 238 0170               shift_loop:
+ 239 0170 0189702A		slt	$t6, $t4, $t1		#there must be a better way than this
+ 240 0174 11C00003		beq	$t6, $zero, shift_loop_done
+ 241 0178 000D6840		sll	$t5, 1
+ 242 017c 218C0001		addi	$t4, $t4, 1		#increment loop
+ 243 0180 0800005C		j	shift_loop	
+ 244 0184               shift_loop_done:	
+ 245 0184 8C8F0000		lw	$t7, 0($a0)		#coefficients
+ 246 0188 8CB80000		lw	$t8, 0($a1)		
+ 247 018c 01AB7024		and	$t6, $t5, $t3		#check our sign
+ 248 0190 11C00002		beq	$t6, $zero, b_prod	#we're positive then
+ 249 0194 200CFFFF		addi	$t4, $zero, -1		#for bitwise negation
+ 250 0198 018F7826		xor	$t7, $t4, $t7		#negate our first coefficient
+ 251 019c               b_prod:
+ 252 019c 01F80018		mult	$t7, $t8
+ 253 01a0 00001012		mflo	$v0			#we now have our coefficient
+ 254 01a4 8C880004		lw	$t0, 4($a0)
+ 255 01a8 01091826		xor	$v1, $t0, $t1		#get our new basis vector
+ 256 01ac               
+ 257 01ac 03E00008		jr	$ra			#return to caller
+ 258 01b0               
+ 259 01b0               
+ 260 01b0               
+ 261 01b0               #
+ 262 01b0               # Name: clear_product_arr
+ 263 01b0               #
+ 264 01b0               # Description: 	sets all the coefficients in the product array back to 0
+ 265 01b0               # 
+ 266 01b0               # Arguments: 	a0: ptr to product arr
+ 267 01b0               #
+ 268 01b0               # Returns:	Nothing
+ 269 01b0               #
+ 270 01b0               
+ 271 01b0               clear_product_arr:
+ 272 01b0               					#leaf, no stack
+ 273 01b0 20880020		addi	$t0, $a0, 32		#8 integer loop
+ 274 01b4 00804825		or	$t1, $a0, $zero
+ 275 01b8               	
+ 276 01b8               clear_loop:
+ 277 01b8 0128502A		slt	$t2, $t1, $t0
+ 278 01bc 11400003		beq	$t2, $zero, clear_loop_done
+ 279 01c0 AD200000		sw	$zero, 0($t1)
+ 280 01c4 21290004		addi	$t1, $t1, 4
+ 281 01c8 0800006E		j	clear_loop
+ 282 01cc               clear_loop_done:
+ 283 01cc 03E00008		jr	$ra
 
 
 EXIT                = 0000000A   
 MEM_BOUND           = 00000190   
-b_prod                00000194 R  text 
-clear_loop            000001B0 R  text 
-clear_loop_done       000001C4 R  text 
-clear_product_arr     000001A8 R  text 
+b_prod                0000019C R  text 
+clear_loop            000001B8 R  text 
+clear_loop_done       000001CC R  text 
+clear_product_arr     000001B0 R  text 
 coeff_loop            00000028 R  text 
 coeff_loop_done       0000005C R  text 
 coeff_stored          00000050 R  text 
 geom_product          00000074 RG text 
-geom_product_done     0000011C R  text 
-get_basis_product     00000144 R  text 
+geom_product_done     00000124 R  text 
+get_basis_product     0000014C R  text 
 mem_gone              0000006C R  text 
 mem_pool              00000000 R  data 
 new_ga_object         00000000 RG text 
 pool_ptr              00000190 R  data 
 prod_arr              000001B4 R  data 
-prod_loop_in          000000D0 R  text 
-prod_loop_in_done     00000104 R  text 
-prod_loop_out         000000C8 R  text 
-prod_loop_out_done    0000010C R  text 
-shift_loop            00000168 R  text 
-shift_loop_done       0000017C R  text 
+prod_loop_in          000000D8 R  text 
+prod_loop_in_done     0000010C R  text 
+prod_loop_out         000000D0 R  text 
+prod_loop_out_done    00000114 R  text 
+shift_loop            00000170 R  text 
+shift_loop_done       00000184 R  text 
 sign_tbl              00000194 R  data 
