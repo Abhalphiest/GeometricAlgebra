@@ -67,7 +67,7 @@
   51 0000               	.globl	main
   52 0000               	.globl	print_basis
   53 0000               	.globl	print_ga_object
-  54 0000               #	.globl	new_ga_object
+  54 0000               	.globl	new_ga_object
   55 0000               #	.globl	geom_product
   56 0000               
   57 0000               main:
@@ -97,16 +97,20 @@
   80 0054 0800000C		j	get_input_loop
   81 0058               	
   82 0058               validate_input:
-  83 0058               
-  84 0058 8FBF0000		lw	$ra, 0($sp)
-  85 005c 8FB00004		lw	$s0, 4($sp)
-  86 0060 8FB10008		lw	$s1, 8($sp)
-  87 0064 8FB2000C		lw	$s2, 12($sp)
-  88 0068 8FB30010		lw	$s3, 16($sp)
-  89 006c 8FB40014		lw	$s4, 20($sp)
-  90 0070 8FB50018		lw	$s5, 24($sp)
-  91 0074 23BD001C		addi	$sp, $sp, 28
-  92 0078 03E00008		jr	$ra		#return
+  83 0058 00152025		or	$a0, $zero, $s5		#our array is an arg
+  84 005c 0C000000		jal	new_ga_object
+  85 0060 00022025		or	$a0, $zero, $v0
+  86 0064 0C000000		jal	print_ga_object
+  87 0068               
+  88 0068 8FBF0000		lw	$ra, 0($sp)
+  89 006c 8FB00004		lw	$s0, 4($sp)
+  90 0070 8FB10008		lw	$s1, 8($sp)
+  91 0074 8FB2000C		lw	$s2, 12($sp)
+  92 0078 8FB30010		lw	$s3, 16($sp)
+  93 007c 8FB40014		lw	$s4, 20($sp)
+  94 0080 8FB50018		lw	$s5, 24($sp)
+  95 0084 23BD001C		addi	$sp, $sp, 28
+  96 0088 03E00008		jr	$ra		#return
 
 
 DIMENSION            = 00000008   
@@ -117,6 +121,7 @@ first_vector_label     00000000 R  data
 get_input_loop         00000030 R  text 
 input_arr              00000034 R  data 
 main                   00000000 RG text 
+new_ga_object          ******** XG
 newline                00000032 R  data 
 print_basis            ******** XG
 print_ga_object        ******** XG

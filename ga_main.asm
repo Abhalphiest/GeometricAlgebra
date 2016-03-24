@@ -51,7 +51,7 @@ input_arr:
 	.globl	main
 	.globl	print_basis
 	.globl	print_ga_object
-#	.globl	new_ga_object
+	.globl	new_ga_object
 #	.globl	geom_product
 
 main:
@@ -80,6 +80,10 @@ get_input_loop:
 	j	get_input_loop
 	
 validate_input:
+	or	$a0, $zero, $s5		#our array is an arg
+	jal	new_ga_object
+	or	$a0, $zero, $v0
+	jal	print_ga_object
 
 	lw	$ra, 0($sp)
 	lw	$s0, 4($sp)
