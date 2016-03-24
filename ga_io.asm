@@ -23,23 +23,25 @@ PRINT_STRING = 	4
 #basis vectors
 
 e0_print:
-	.asciiz " "
+	.asciiz "e0\t"
 e1_print:
-	.asciiz "e1 "
+	.asciiz "e1\t"
 e2_print:
-	.asciiz "e2 "
+	.asciiz "e2\t"
 e3_print:
-	.asciiz "e3 "
+	.asciiz "e3\t"
 e12_print:
-	.asciiz "e12 "
+	.asciiz "e12\t"
 e23_print:
-	.asciiz "e23 "
+	.asciiz "e23\t"
 e31_print:
-	.asciiz "e31 "
+	.asciiz "e31\t"
 e123_print:
-	.asciiz "e123 "
+	.asciiz "e123\t"
 
 	.align	2
+
+
 
 basis_tbl:
 	.word 	e0_print
@@ -123,6 +125,8 @@ print_ga_loop:
 	addi	$s2, $s2, 1
 	j	print_ga_loop		#back to top
 print_ga_loop_done:
+
+
 	lw	$ra, 0($sp)		#restore our stack frame
 	lw	$s0, 4($sp)
 	lw	$s1, 8($sp)

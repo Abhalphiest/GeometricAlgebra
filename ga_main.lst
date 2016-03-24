@@ -31,37 +31,38 @@
   31 0000               	.align	2
   32 0000               
   33 0000               first_vector_label:
-  34 0000 46697273		.asciiz "First operand: "
+  34 0000 46697273		.asciiz "First operand: \n"
           74206F70
           6572616E
-          643A2000
-  35 0010               second_vector_label:
-  36 0010 5365636F		.asciiz "Second operand: "
+          643A200A
+          00      
+  35 0011               second_vector_label:
+  36 0011 5365636F		.asciiz "Second operand: \n"
           6E64206F
           70657261
           6E643A20
-          00      
-  37 0021               product_label:
-  38 0021 50726F64		.asciiz "Product output: "
+          0A00    
+  37 0023               product_label:
+  38 0023 50726F64		.asciiz "Product output: \n"
           75637420
           6F757470
           75743A20
-          00      
-  39 0032               newline:
-  40 0032 0A00    		.asciiz "\n"
-  41 0034               
-  42 0034               	.align 	2
-  43 0034               input_arr:
-  44 0034 00000000		.space 32	#the max we would need for 3 dim
+          0A00    
+  39 0035               newline:
+  40 0035 0A00    		.asciiz "\n"
+  41 0037               
+  42 0037 00      		.align 	2
+  43 0038               input_arr:
+  44 0038 00000000		.space 32	#the max we would need for 3 dim
           00000000
           00000000
           00000000
           00000000
           00000000
-  45 0054               #
-  46 0054               # FUNCTIONS
-  47 0054               #
-  48 0054               
+  45 0058               #
+  46 0058               # FUNCTIONS
+  47 0058               #
+  48 0058               
   49 0000               	.text
   50 0000               	.align	2
   51 0000               	.globl	main
@@ -80,38 +81,79 @@
   64 0018 AFB40014		sw	$s4, 20($sp)
   65 001c AFB50018		sw	$s5, 24($sp)
   66 0020               
-  67 0020 0000A025		or	$s4, $zero, $zero	#loop control
-  68 0024 34130008		ori	$s3, $zero, DIMENSION	#set up for loop bound
-  69 0028 3C150000		la	$s5, input_arr
-     002c 36B50000
-  70 0030               get_input_loop:
-  71 0030 0293402A		slt	$t0, $s4, $s3		#will be 1 if we are still in
-  72 0034 11000008		beq	$t0, $zero, validate_input
-  73 0038 00142025		or	$a0, $zero, $s4
-  74 003c 0C000000		jal	print_basis
-  75 0040 34020005		ori	$v0, $zero, READ_INT
-  76 0044 0000000C		syscall
-  77 0048 AEA20000		sw	$v0, 0($s5)
-  78 004c 22B50004		addi	$s5, $s5, 4
-  79 0050 22940001		addi	$s4, $s4, 1
-  80 0054 0800000C		j	get_input_loop
-  81 0058               	
-  82 0058               validate_input:
-  83 0058 3C040000		la	$a0, input_arr		#our array is an arg
-     005c 34840000
-  84 0060 0C000000		jal	new_ga_object
-  85 0064 00022025		or	$a0, $zero, $v0
-  86 0068 0C000000		jal	print_ga_object
-  87 006c               
-  88 006c 8FBF0000		lw	$ra, 0($sp)
-  89 0070 8FB00004		lw	$s0, 4($sp)
-  90 0074 8FB10008		lw	$s1, 8($sp)
-  91 0078 8FB2000C		lw	$s2, 12($sp)
-  92 007c 8FB30010		lw	$s3, 16($sp)
-  93 0080 8FB40014		lw	$s4, 20($sp)
-  94 0084 8FB50018		lw	$s5, 24($sp)
-  95 0088 23BD001C		addi	$sp, $sp, 28
-  96 008c 03E00008		jr	$ra		#return
+  67 0020 3C040000		la	$a0, first_vector_label
+     0024 34840000
+  68 0028 34020004		ori	$v0, $zero, PRINT_STRING
+  69 002c 0000000C		syscall
+  70 0030               
+  71 0030 3C040000		la	$a0, input_arr		#get ready to call input function
+     0034 34840000
+  72 0038 0C000021		jal	get_obj_input
+  73 003c               
+  74 003c 3C040000		la	$a0, input_arr		#our array is an arg
+     0040 34840000
+  75 0044 0C000000		jal	new_ga_object
+  76 0048 00022025		or	$a0, $zero, $v0
+  77 004c 0C000000		jal	print_ga_object
+  78 0050               	
+  79 0050 3C040000		la	$a0, newline		#append a newline
+     0054 34840000
+  80 0058 34020004		ori	$v0, $zero, PRINT_STRING
+  81 005c 0000000C		syscall
+  82 0060               
+  83 0060 8FBF0000		lw	$ra, 0($sp)
+  84 0064 8FB00004		lw	$s0, 4($sp)
+  85 0068 8FB10008		lw	$s1, 8($sp)
+  86 006c 8FB2000C		lw	$s2, 12($sp)
+  87 0070 8FB30010		lw	$s3, 16($sp)
+  88 0074 8FB40014		lw	$s4, 20($sp)
+  89 0078 8FB50018		lw	$s5, 24($sp)
+  90 007c 23BD001C		addi	$sp, $sp, 28
+  91 0080 03E00008		jr	$ra		#return
+  92 0084               
+  93 0084               
+  94 0084               
+  95 0084               #
+  96 0084               # Name:	get_obj_input
+  97 0084               #
+  98 0084               # Description:	prompts the user to give the coefficients of a geometric
+  99 0084               #		object
+ 100 0084               #
+ 101 0084               # Arguments:	address of a place where we can store our array
+ 102 0084               #
+ 103 0084               # Returns:	Nothing
+ 104 0084               #
+ 105 0084               
+ 106 0084               get_obj_input:
+ 107 0084 23BDFFF0		addi	$sp, $sp, -16
+ 108 0088 AFBF0000		sw	$ra, 0($sp)
+ 109 008c AFB00004		sw	$s0, 4($sp)
+ 110 0090 AFB10008		sw	$s1, 8($sp)
+ 111 0094 AFB2000C		sw	$s2, 12($sp)
+ 112 0098               
+ 113 0098 00008825		or	$s1, $zero, $zero	#loop control
+ 114 009c 34120008		ori	$s2, $zero, DIMENSION	#setup for loop
+ 115 00a0 00809825		or	$s3, $a0, $zero		#protect our address
+ 116 00a4               
+ 117 00a4               get_input_loop:
+ 118 00a4 0232402A		slt	$t0, $s1, $s2		#will be 1 if still in bounds
+ 119 00a8 11000008		beq	$t0, $zero, get_input_loop_done
+ 120 00ac               	
+ 121 00ac 00112025		or	$a0, $zero, $s1		#print our basis vector as a label
+ 122 00b0 0C000000		jal	print_basis
+ 123 00b4 34020005		ori	$v0, $zero, READ_INT
+ 124 00b8 0000000C		syscall
+ 125 00bc AE620000		sw	$v0, 0($s3)
+ 126 00c0 22730004		addi	$s3, $s3, 4
+ 127 00c4 22310001		addi	$s1, $s1, 1
+ 128 00c8 08000029		j	get_input_loop
+ 129 00cc               get_input_loop_done:
+ 130 00cc 8FBF0000		lw	$ra, 0($sp)		#restore stack and return
+ 131 00d0 8FB00004		lw	$s0, 4($sp)
+ 132 00d4 8FB10008		lw	$s1, 8($sp)
+ 133 00d8 8FB2000C		lw	$s2, 12($sp)
+ 134 00dc 23BD0010		addi	$sp, $sp, 16
+ 135 00e0 03E00008		jr	$ra		
 
 
 DIMENSION            = 00000008   
@@ -119,13 +161,14 @@ EXIT                 = 0000000A
 PRINT_STRING         = 00000004   
 READ_INT             = 00000005   
 first_vector_label     00000000 R  data 
-get_input_loop         00000030 R  text 
-input_arr              00000034 R  data 
+get_input_loop         000000A4 R  text 
+get_input_loop_done    000000CC R  text 
+get_obj_input          00000084 R  text 
+input_arr              00000038 R  data 
 main                   00000000 RG text 
 new_ga_object          ******** XG
-newline                00000032 R  data 
+newline                00000035 R  data 
 print_basis            ******** XG
 print_ga_object        ******** XG
-product_label          00000021 R  data 
-second_vector_label    00000010 R  data 
-validate_input         00000058 R  text 
+product_label          00000023 R  data 
+second_vector_label    00000011 R  data 
