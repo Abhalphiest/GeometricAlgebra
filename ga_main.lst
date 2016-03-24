@@ -50,43 +50,63 @@
   39 0032               newline:
   40 0032 0A00    		.asciiz "\n"
   41 0034               
-  42 0034               #
-  43 0034               # FUNCTIONS
-  44 0034               #
-  45 0034               
-  46 0000               	.text
-  47 0000               	.align	2
-  48 0000               	.globl	main
-  49 0000               	.globl	print_basis
-  50 0000               	.globl	print_ga_object
-  51 0000               #	.globl	new_ga_object
-  52 0000               #	.globl	geom_product
-  53 0000               
-  54 0000               main:
-  55 0000 23BDFFE8		addi	$sp, $sp, -24		#build our stack frame
-  56 0004 AFBF0000		sw	$ra, 0($sp)
-  57 0008 AFB00004		sw	$s0, 4($sp)
-  58 000c AFB10008		sw	$s1, 8($sp)
-  59 0010 AFB2000C		sw	$s2, 12($sp)
-  60 0014 AFB30010		sw	$s3, 16($sp)
-  61 0018 AFB40014		sw	$s4, 20($sp)
-  62 001c               
-  63 001c 0000A025		or	$s4, $zero, $zero	#loop control
-  64 0020 34130008		ori	$s3, $zero, DIMENSION	#set up for loop bound
-  65 0024               get_input_loop:
-  66 0024 0293402A		slt	$t0, $s4, $s3		#will be 1 if we are still in
-  67 0028 11000000		beq	$t0, $zero, validate_input
-  68 002c               
-  69 002c               validate_input:
-  70 002c               
-  71 002c 8FBF0000		lw	$ra, 0($sp)
-  72 0030 8FB00004		lw	$s0, 4($sp)
-  73 0034 8FB10008		lw	$s1, 8($sp)
-  74 0038 8FB2000C		lw	$s2, 12($sp)
-  75 003c 8FB30010		lw	$s3, 16($sp)
-  76 0040 8FB40014		lw	$s4, 20($sp)
-  77 0044 23BD0018		addi	$sp, $sp, 24
-  78 0048 03E00008		jr	$ra		#return
+  42 0034               	.align 	2
+  43 0034               input_arr:
+  44 0034 00000000		.space 32	#the max we would need for 3 dim
+          00000000
+          00000000
+          00000000
+          00000000
+          00000000
+  45 0054               #
+  46 0054               # FUNCTIONS
+  47 0054               #
+  48 0054               
+  49 0000               	.text
+  50 0000               	.align	2
+  51 0000               	.globl	main
+  52 0000               	.globl	print_basis
+  53 0000               	.globl	print_ga_object
+  54 0000               #	.globl	new_ga_object
+  55 0000               #	.globl	geom_product
+  56 0000               
+  57 0000               main:
+  58 0000 23BDFFE4		addi	$sp, $sp, -28		#build our stack frame
+  59 0004 AFBF0000		sw	$ra, 0($sp)
+  60 0008 AFB00004		sw	$s0, 4($sp)
+  61 000c AFB10008		sw	$s1, 8($sp)
+  62 0010 AFB2000C		sw	$s2, 12($sp)
+  63 0014 AFB30010		sw	$s3, 16($sp)
+  64 0018 AFB40014		sw	$s4, 20($sp)
+  65 001c AFB50018		sw	$s5, 24($sp)
+  66 0020               
+  67 0020 0000A025		or	$s4, $zero, $zero	#loop control
+  68 0024 34130008		ori	$s3, $zero, DIMENSION	#set up for loop bound
+  69 0028 3C150000		la	$s5, input_arr
+     002c 36B50000
+  70 0030               get_input_loop:
+  71 0030 0293402A		slt	$t0, $s4, $s3		#will be 1 if we are still in
+  72 0034 11000008		beq	$t0, $zero, validate_input
+  73 0038 00142025		or	$a0, $zero, $s4
+  74 003c 0C000000		jal	print_basis
+  75 0040 34020005		ori	$v0, $zero, READ_INT
+  76 0044 0000000C		syscall
+  77 0048 AEA20000		sw	$v0, 0($s5)
+  78 004c 22B50004		addi	$s5, $s5, 4
+  79 0050 22940001		addi	$s4, $s4, 1
+  80 0054 0800000C		j	get_input_loop
+  81 0058               	
+  82 0058               validate_input:
+  83 0058               
+  84 0058 8FBF0000		lw	$ra, 0($sp)
+  85 005c 8FB00004		lw	$s0, 4($sp)
+  86 0060 8FB10008		lw	$s1, 8($sp)
+  87 0064 8FB2000C		lw	$s2, 12($sp)
+  88 0068 8FB30010		lw	$s3, 16($sp)
+  89 006c 8FB40014		lw	$s4, 20($sp)
+  90 0070 8FB50018		lw	$s5, 24($sp)
+  91 0074 23BD001C		addi	$sp, $sp, 28
+  92 0078 03E00008		jr	$ra		#return
 
 
 DIMENSION            = 00000008   
@@ -94,11 +114,12 @@ EXIT                 = 0000000A
 PRINT_STRING         = 00000004   
 READ_INT             = 00000005   
 first_vector_label     00000000 R  data 
-get_input_loop         00000024 R  text 
+get_input_loop         00000030 R  text 
+input_arr              00000034 R  data 
 main                   00000000 RG text 
 newline                00000032 R  data 
 print_basis            ******** XG
 print_ga_object        ******** XG
 product_label          00000021 R  data 
 second_vector_label    00000010 R  data 
-validate_input         0000002C R  text 
+validate_input         00000058 R  text 
