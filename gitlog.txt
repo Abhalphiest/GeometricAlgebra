@@ -1,3 +1,27 @@
+commit 5bba5c81b207f52b8ec98bc440a0516d389f681e
+Author: Margaret <med7068@rit.edu>
+Date:   Thu Mar 24 12:13:07 2016 -0400
+
+    geometric product implemented, not at all tested yet but it assembles. Gonna take a lunch break before testing.
+
+commit 4c47bfae32cb845093b086c174dd2ac4e4bb8290
+Author: Margaret <med7068@rit.edu>
+Date:   Thu Mar 24 09:17:45 2016 -0400
+
+    moved taking in an object as input to its own dedicated function to clean up the main. cleaned up output somewhat. geometric product still to be implemented, but thats about all we have left for now
+
+commit 873313f7bbbb98cff85a64b81f9f9c000d42f6f3
+Author: Margaret <med7068@rit.edu>
+Date:   Thu Mar 24 08:55:51 2016 -0400
+
+    storing these objects and printing them now work, although the print formatting could use a boost
+
+commit 0a92e9395a13ddef8425bc24b1143f9f0be3bfec
+Author: Margaret <med7068@rit.edu>
+Date:   Thu Mar 24 01:02:15 2016 -0400
+
+    started implementation of the geomalgebra.asm file, it runs but doesnt seem to function quite right will investigate after getting some sleep
+
 commit 94534b9d0c7962a0204d441a54328482ecf9e1c5
 Author: Margaret <med7068@rit.edu>
 Date:   Thu Mar 24 00:07:39 2016 -0400

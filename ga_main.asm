@@ -52,17 +52,14 @@ input_arr:
 	.globl	print_basis
 	.globl	print_ga_object
 	.globl	new_ga_object
-#	.globl	geom_product
+	.globl	geom_product
 
 main:
-	addi	$sp, $sp, -28		#build our stack frame
+	addi	$sp, $sp, -16		#build our stack frame
 	sw	$ra, 0($sp)
 	sw	$s0, 4($sp)
 	sw	$s1, 8($sp)
 	sw	$s2, 12($sp)
-	sw	$s3, 16($sp)
-	sw	$s4, 20($sp)
-	sw	$s5, 24($sp)
 
 	la	$a0, first_vector_label
 	ori	$v0, $zero, PRINT_STRING
@@ -73,21 +70,54 @@ main:
 
 	la	$a0, input_arr		#our array is an arg
 	jal	new_ga_object
-	or	$a0, $zero, $v0
-	jal	print_ga_object
+	or	$s0, $v0, $zero		#save our first obj
 	
+	or	$a0, $s0, $zero
+	jal	print_ga_object
+
 	la	$a0, newline		#append a newline
 	ori	$v0, $zero, PRINT_STRING
 	syscall
 
+	la	$a0, second_vector_label
+	ori	$v0, $zero, PRINT_STRING
+	syscall
+	
+	la	$a0, input_arr		#get our second object
+	jal	get_obj_input
+	
+	la	$a0, input_arr
+	jal	new_ga_object
+	or	$s1, $v0, $zero		#save our second obj
+	
+	or	$a0, $s1, $zero		#print back our second input
+	jal	print_ga_object
+
+	la	$a0, newline		#append newline
+	ori	$v0, $zero, PRINT_STRING
+	syscall
+	
+	la	$a0, product_label	#print product label
+	ori	$v0, $zero, PRINT_STRING
+	syscall
+
+	or	$a0, $s0, $zero		#load our args for product
+	or	$a1, $s1, $zero
+	jal	geom_product
+	or	$s2, $v0, $zero		#save our product
+
+	or	$a0, $s2, $zero		#print our product
+	jal	print_ga_object
+
+	la	$a0, newline
+	ori	$v0, $zero, PRINT_STRING
+	syscall
+	
 	lw	$ra, 0($sp)
 	lw	$s0, 4($sp)
 	lw	$s1, 8($sp)
 	lw	$s2, 12($sp)
-	lw	$s3, 16($sp)
-	lw	$s4, 20($sp)
-	lw	$s5, 24($sp)
-	addi	$sp, $sp, 28
+	addi	$sp, $sp, 16
 	jr	$ra		#return
 
 
