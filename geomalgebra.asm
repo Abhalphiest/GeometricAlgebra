@@ -158,11 +158,11 @@ geom_product:
 	
 	lw	$s4, 0($s0)		#set up our loop boundaries
 	lw	$s5, 0($s1)
-	sll	$s4, 3
+	sll	$s4, 3			#8 byte structs in length
 	sll	$s5, 3
 	add	$s4, $s0, $s4
 	add	$s5, $s1, $s5
-	addi	$s4, $s4, 4
+	addi	$s4, $s4, 4		#skip the first word
 	addi	$s5, $s5, 4
 	la	$s6, prod_arr
 
@@ -179,7 +179,7 @@ prod_loop_in:
 	
 	jal	get_basis_product
 	or	$t0, $v1, $zero
-	sll	$t0, 2
+	sll	$t0, 2		#word address to byte address
 	add	$t0, $s6, $t0	#get pointer to correct element of array
 	lw	$t1, 0($t0)
 	add	$t1, $v0, $t1
@@ -188,7 +188,7 @@ prod_loop_in:
 	addi	$s3, $s3, 8
 	j	prod_loop_in
 prod_loop_in_done:
-
+	addi	$s3, $s1, 4	#reset our inner loop control
 	addi	$s2, $s2, 8
 	j 	prod_loop_out
 prod_loop_out_done:

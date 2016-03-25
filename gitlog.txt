@@ -1,3 +1,9 @@
+commit 07f607ec887fe244833f9bc8c5db8b0d110d48d3
+Author: Margaret <med7068@rit.edu>
+Date:   Thu Mar 24 23:59:03 2016 -0400
+
+    still doesnt work quite right, but were getting there. missing terms, probably an error in the loop. basis multiplication seems to work great its a problem in running the full product
+
 commit 8c28be05f238615f85060c3794dcb2c1efe534a4
 Author: Margaret <med7068@rit.edu>
 Date:   Thu Mar 24 12:59:56 2016 -0400

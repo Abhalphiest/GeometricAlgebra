@@ -21,16 +21,16 @@ Module:  ga_main.obj
                  EXIT          A   0x0000000a
 
 Module:  geomalgebra.obj
- Text segment:  468 bytes, load point 0x0040014c
+ Text segment:  472 bytes, load point 0x0040014c
  Data segment:  472 bytes, load point 0x10000058
  Symbols:
                  Name Section Mode    Value
              sign_tbl   Data   R   0x100001ec
-      clear_loop_done   Text   R   0x0040031c
+      clear_loop_done   Text   R   0x00400320
         prod_loop_out   Text   R   0x0040021c
-               b_prod   Text   R   0x004002ec
+               b_prod   Text   R   0x004002f0
       coeff_loop_done   Text   R   0x004001a8
-    get_basis_product   Text   R   0x00400298
+    get_basis_product   Text   R   0x0040029c
          geom_product   Text   RG  0x004001c0
              prod_arr   Data   R   0x1000020c
          prod_loop_in   Text   R   0x00400224
@@ -40,40 +40,40 @@ Module:  geomalgebra.obj
             MEM_BOUND          A   0x00000190
              pool_ptr   Data   R   0x100001e8
          coeff_stored   Text   R   0x0040019c
-   prod_loop_out_done   Text   R   0x00400260
-    clear_product_arr   Text   R   0x00400300
+   prod_loop_out_done   Text   R   0x00400264
+    clear_product_arr   Text   R   0x00400304
         new_ga_object   Text   RG  0x0040014c
-    geom_product_done   Text   R   0x00400270
+    geom_product_done   Text   R   0x00400274
                  EXIT          A   0x0000000a
              mem_gone   Text   R   0x004001b8
-           shift_loop   Text   R   0x004002bc
-           clear_loop   Text   R   0x00400308
-      shift_loop_done   Text   R   0x004002d0
+           shift_loop   Text   R   0x004002c0
+           clear_loop   Text   R   0x0040030c
+      shift_loop_done   Text   R   0x004002d4
 
 Module:  ga_io.obj
- Text segment:  156 bytes, load point 0x00400320
+ Text segment:  156 bytes, load point 0x00400324
  Data segment:  72 bytes, load point 0x10000230
  Symbols:
                  Name Section Mode    Value
              e3_print   Data   R   0x1000023c
-   print_ga_loop_done   Text   R   0x004003a0
+   print_ga_loop_done   Text   R   0x004003a4
              e1_print   Data   R   0x10000234
             basis_tbl   Data   R   0x10000258
-          print_basis   Text   RG  0x00400320
+          print_basis   Text   RG  0x00400324
            e123_print   Data   R   0x1000024f
          PRINT_STRING          A   0x00000004
             e12_print   Data   R   0x10000240
             e31_print   Data   R   0x1000024a
             e23_print   Data   R   0x10000245
-        print_ga_loop   Text   R   0x00400378
-      print_ga_object   Text   RG  0x00400350
+        print_ga_loop   Text   R   0x0040037c
+      print_ga_object   Text   RG  0x00400354
              e2_print   Data   R   0x10000238
              e0_print   Data   R   0x10000230
             PRINT_INT          A   0x00000001
 
 Module:  r2k_startup.obj
- Text segment:  36 bytes, load point 0x004003bc
+ Text segment:  36 bytes, load point 0x004003c0
  Symbols:
                  Name Section Mode    Value
             SYS_EXIT2          A   0x00000011
-       __r2k__entry__   Text   RG  0x004003c0
+       __r2k__entry__   Text   RG  0x004003c4
