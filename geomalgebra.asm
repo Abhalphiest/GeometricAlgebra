@@ -41,10 +41,10 @@ sign_tbl:
 	.word	0	#bit field for e0
 	.word	48	#e1
 	.word	10	#e2
-	.word	100	#e12
+	.word	202	#e12
 	.word	68	#e3
-	.word	176	#e31
-	.word	236	#e23
+	.word	184	#e31
+	.word	228	#e23
 	.word	232	#e123
 
 prod_arr:
