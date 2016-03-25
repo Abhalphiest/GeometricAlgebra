@@ -165,8 +165,8 @@
  158 00a8               	
  159 00a8 8E140000		lw	$s4, 0($s0)		#set up our loop boundaries
  160 00ac 8E350000		lw	$s5, 0($s1)
- 161 00b0 0014A080		sll	$s4, 2
- 162 00b4 0015A880		sll	$s5, 2
+ 161 00b0 0014A0C0		sll	$s4, 3
+ 162 00b4 0015A8C0		sll	$s5, 3
  163 00b8 0214A020		add	$s4, $s0, $s4
  164 00bc 0235A820		add	$s5, $s1, $s5
  165 00c0 22940004		addi	$s4, $s4, 4
@@ -204,7 +204,7 @@
  196 0118 0C000000		jal	new_ga_object	#puts it in v0 for us
  197 011c               	
  198 011c 02C02025		or	$a0, $s6, $zero
- 199 0120 0C00006C		jal	clear_product_arr
+ 199 0120 0C00006D		jal	clear_product_arr
  200 0124               geom_product_done:
  201 0124 8FBF0000		lw	$ra, 0($sp)		#restore stack and return
  202 0128 8FB00004		lw	$s0, 4($sp)
@@ -254,50 +254,51 @@
  245 0184 8C8F0000		lw	$t7, 0($a0)		#coefficients
  246 0188 8CB80000		lw	$t8, 0($a1)		
  247 018c 01AB7024		and	$t6, $t5, $t3		#check our sign
- 248 0190 11C00002		beq	$t6, $zero, b_prod	#we're positive then
+ 248 0190 11C00003		beq	$t6, $zero, b_prod	#we're positive then
  249 0194 200CFFFF		addi	$t4, $zero, -1		#for bitwise negation
  250 0198 018F7826		xor	$t7, $t4, $t7		#negate our first coefficient
- 251 019c               b_prod:
- 252 019c 01F80018		mult	$t7, $t8
- 253 01a0 00001012		mflo	$v0			#we now have our coefficient
- 254 01a4 8C880004		lw	$t0, 4($a0)
- 255 01a8 01091826		xor	$v1, $t0, $t1		#get our new basis vector
- 256 01ac               
- 257 01ac 03E00008		jr	$ra			#return to caller
- 258 01b0               
- 259 01b0               
- 260 01b0               
- 261 01b0               #
- 262 01b0               # Name: clear_product_arr
- 263 01b0               #
- 264 01b0               # Description: 	sets all the coefficients in the product array back to 0
- 265 01b0               # 
- 266 01b0               # Arguments: 	a0: ptr to product arr
- 267 01b0               #
- 268 01b0               # Returns:	Nothing
- 269 01b0               #
- 270 01b0               
- 271 01b0               clear_product_arr:
- 272 01b0               					#leaf, no stack
- 273 01b0 20880020		addi	$t0, $a0, 32		#8 integer loop
- 274 01b4 00804825		or	$t1, $a0, $zero
- 275 01b8               	
- 276 01b8               clear_loop:
- 277 01b8 0128502A		slt	$t2, $t1, $t0
- 278 01bc 11400003		beq	$t2, $zero, clear_loop_done
- 279 01c0 AD200000		sw	$zero, 0($t1)
- 280 01c4 21290004		addi	$t1, $t1, 4
- 281 01c8 0800006E		j	clear_loop
- 282 01cc               clear_loop_done:
- 283 01cc 03E00008		jr	$ra
+ 251 019c 21EF0001		addi	$t7, $t7, 1
+ 252 01a0               b_prod:
+ 253 01a0 01F80018		mult	$t7, $t8
+ 254 01a4 00001012		mflo	$v0			#we now have our coefficient
+ 255 01a8 8C880004		lw	$t0, 4($a0)
+ 256 01ac 01091826		xor	$v1, $t0, $t1		#get our new basis vector
+ 257 01b0               
+ 258 01b0 03E00008		jr	$ra			#return to caller
+ 259 01b4               
+ 260 01b4               
+ 261 01b4               
+ 262 01b4               #
+ 263 01b4               # Name: clear_product_arr
+ 264 01b4               #
+ 265 01b4               # Description: 	sets all the coefficients in the product array back to 0
+ 266 01b4               # 
+ 267 01b4               # Arguments: 	a0: ptr to product arr
+ 268 01b4               #
+ 269 01b4               # Returns:	Nothing
+ 270 01b4               #
+ 271 01b4               
+ 272 01b4               clear_product_arr:
+ 273 01b4               					#leaf, no stack
+ 274 01b4 20880020		addi	$t0, $a0, 32		#8 integer loop
+ 275 01b8 00804825		or	$t1, $a0, $zero
+ 276 01bc               	
+ 277 01bc               clear_loop:
+ 278 01bc 0128502A		slt	$t2, $t1, $t0
+ 279 01c0 11400003		beq	$t2, $zero, clear_loop_done
+ 280 01c4 AD200000		sw	$zero, 0($t1)
+ 281 01c8 21290004		addi	$t1, $t1, 4
+ 282 01cc 0800006F		j	clear_loop
+ 283 01d0               clear_loop_done:
+ 284 01d0 03E00008		jr	$ra
 
 
 EXIT                = 0000000A   
 MEM_BOUND           = 00000190   
-b_prod                0000019C R  text 
-clear_loop            000001B8 R  text 
-clear_loop_done       000001CC R  text 
-clear_product_arr     000001B0 R  text 
+b_prod                000001A0 R  text 
+clear_loop            000001BC R  text 
+clear_loop_done       000001D0 R  text 
+clear_product_arr     000001B4 R  text 
 coeff_loop            00000028 R  text 
 coeff_loop_done       0000005C R  text 
 coeff_stored          00000050 R  text 

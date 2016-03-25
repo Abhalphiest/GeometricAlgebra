@@ -158,8 +158,8 @@ geom_product:
 	
 	lw	$s4, 0($s0)		#set up our loop boundaries
 	lw	$s5, 0($s1)
-	sll	$s4, 2
-	sll	$s5, 2
+	sll	$s4, 3
+	sll	$s5, 3
 	add	$s4, $s0, $s4
 	add	$s5, $s1, $s5
 	addi	$s4, $s4, 4
@@ -248,6 +248,7 @@ shift_loop_done:
 	beq	$t6, $zero, b_prod	#we're positive then
 	addi	$t4, $zero, -1		#for bitwise negation
 	xor	$t7, $t4, $t7		#negate our first coefficient
+	addi	$t7, $t7, 1
 b_prod:
 	mult	$t7, $t8
 	mflo	$v0			#we now have our coefficient
