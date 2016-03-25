@@ -39,13 +39,13 @@ pool_ptr:
 
 sign_tbl:
 	.word	0	#bit field for e0
-	.word	72	#e1
-	.word	18	#e2
-	.word	178	#e12
-	.word	36	#e3
-	.word	200	#e31
-	.word	242	#e23
-	.word	220	#e123
+	.word	48	#e1
+	.word	10	#e2
+	.word	100	#e12
+	.word	68	#e3
+	.word	176	#e31
+	.word	236	#e23
+	.word	232	#e123
 
 prod_arr:
 	.word	0	#for building our product

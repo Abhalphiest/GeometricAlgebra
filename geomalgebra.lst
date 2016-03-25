@@ -44,13 +44,13 @@
   39 0194               
   40 0194               sign_tbl:
   41 0194 00000000		.word	0	#bit field for e0
-  42 0198 00000048		.word	72	#e1
-  43 019c 00000012		.word	18	#e2
-  44 01a0 000000B2		.word	178	#e12
-  45 01a4 00000024		.word	36	#e3
-  46 01a8 000000C8		.word	200	#e31
-  47 01ac 000000F2		.word	242	#e23
-  48 01b0 000000DC		.word	220	#e123
+  42 0198 00000030		.word	48	#e1
+  43 019c 0000000A		.word	10	#e2
+  44 01a0 00000064		.word	100	#e12
+  45 01a4 00000044		.word	68	#e3
+  46 01a8 000000B0		.word	176	#e31
+  47 01ac 000000EC		.word	236	#e23
+  48 01b0 000000E8		.word	232	#e123
   49 01b4               
   50 01b4               prod_arr:
   51 01b4 00000000		.word	0	#for building our product
