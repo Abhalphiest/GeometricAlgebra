@@ -1,3 +1,42 @@
+commit abc2d4704cf5c181f6f21987058e1414be08cfac
+Author: Margaret <med7068@rit.edu>
+Date:   Wed Apr 13 19:15:14 2016 -0400
+
+    moved mips folder into own directory to allow for other projects
+
+commit cea67390ce32b1870103d5cf139a7a525338ed0b
+Merge: 271eb0d 82364e3
+Author: Margaret <med7068@rit.edu>
+Date:   Wed Apr 13 19:05:57 2016 -0400
+
+    Merge branch 'master' of https://github.com/Abhalphiest/GeometricAlgebra
+    
+    Starting a new online repo with an existing local repo.
+
+commit 82364e3ba0f8f8d17808f93f6247bfe507f68236
+Author: Margaret Dorsey <margaretdorsey94@gmail.com>
+Date:   Wed Apr 13 19:04:48 2016 -0400
+
+    Initial commit
+
+commit 271eb0d500858b1985908c6ff490d032f083c0a4
+Author: Margaret <med7068@rit.edu>
+Date:   Fri Mar 25 17:04:06 2016 -0400
+
+    product seems to be debugged.. for now. more functionality to come later most likely
+
+commit 1fe5fc05e9fed0891419e16acb82b4bf760da469
+Author: Margaret <med7068@rit.edu>
+Date:   Fri Mar 25 16:47:18 2016 -0400
+
+    fixed an ordering bug in the sign lookup table
+
+commit e3fade8d23df5fdde0bc50adfbbed9f7512bde3c
+Author: Margaret <med7068@rit.edu>
+Date:   Fri Mar 25 11:57:15 2016 -0400
+
+    found a bug, our loop is completing now, it seems like our lookup table might have some errors though
+
 commit 07f607ec887fe244833f9bc8c5db8b0d110d48d3
 Author: Margaret <med7068@rit.edu>
 Date:   Thu Mar 24 23:59:03 2016 -0400
