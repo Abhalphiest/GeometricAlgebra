@@ -35,3 +35,7 @@ OBJFILES = ga_main.obj geomalgebra.obj ga_io.obj
 #
 ga_main.out:	$(OBJFILES)
 	$(RLINK) -m -o $*.out $(OBJFILES) > $*.map
+
+
+clean:
+	rm -f *.lst *.map *.out *.obj
