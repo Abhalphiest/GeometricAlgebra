@@ -1,0 +1,6 @@
+# LaTex Output Files	#
+#########################
+
+*.aux
+*.log
+*.synctex.gz
